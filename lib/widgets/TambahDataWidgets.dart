@@ -25,33 +25,20 @@ class ProductForm extends StatefulWidget {
 
 class _ProductFormState extends State<ProductForm> {
   String _katagori = 'Makanan';
-  // XFile? _imageFile;
+  XFile? _imageFile;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-  File? _imageFile;
+  
 
-  Future pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-
-    if (image != null) {
+  Future<void> _pickImage() async {
+      final ImagePicker _picker = ImagePicker();
+      final XFile? selectedImage =
+          await _picker.pickImage(source:  ImageSource.gallery);
       setState(() {
-        _imageFile = File(image.path);
+        _imageFile = selectedImage;
       });
     }
-  }
 
-  Future<String?> uploadImage(String path) async {
-    if (_imageFile == null) return null;
-
-    final fileName = DateTime.now().millisecondsSinceEpoch;
-    final uploadPath = 'uploads/$fileName';
-
-    final response =
-        await supabase.storage.from('Foodaas').upload(uploadPath, _imageFile!);
-
-    return supabase.storage.from('Foodaas').getPublicUrl(uploadPath);
-  }
 
   Future<List<dynamic>> fetchData() async {
     final response = await supabase.from('Foodaas').select('*');
@@ -148,38 +135,23 @@ class _ProductFormState extends State<ProductForm> {
                       SizedBox(height: screenHeight * 0.03),
 
                       // Image Picker Field (placeholder)
-                      GestureDetector(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: screenWidth * 0.03,
-                            vertical: screenHeight * 0.015,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius:
-                                BorderRadius.circular(screenWidth * 0.05),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              _imageFile != null
-                                  ? Flexible(
-                                      child: Image.file(
-                                        _imageFile!,
-                                        width: screenWidth * 0.3,
-                                        height: screenHeight * 0.15,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )
-                                  : const Text("No image selected"),
-                              ElevatedButton(
-                                onPressed: pickImage,
-                                child: const Text("Pick Image"),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                    GestureDetector(
+                onTap: _pickImage,
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(_imageFile == null ? 'Choose file' : 'Image Selected'),
+                    ],
+                  ),
+                ),
+              ),
+
                       SizedBox(height: screenHeight * 0.05),
 
                       // Button
@@ -188,13 +160,11 @@ class _ProductFormState extends State<ProductForm> {
                           final name = _nameController.text;
                           final price = _priceController.text;
 
-                          var imageUrl = await uploadImage('uploads');
-                          if (imageUrl == null) return;
+                     
 
                           await supabase.from('Foodaas').insert({
                             'name': name,
                             'price': price,
-                            'image_url': imageUrl,
                           });
 
                           Navigator.push(

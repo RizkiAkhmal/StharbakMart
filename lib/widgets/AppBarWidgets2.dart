@@ -13,7 +13,7 @@ class Appbarwidgets2 extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: screenHeight * 0.02,
-        horizontal: screenWidth * 0.04,
+        horizontal: screenWidth * 0.03,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

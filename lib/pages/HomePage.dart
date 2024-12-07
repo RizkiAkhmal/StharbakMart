@@ -91,7 +91,6 @@ class _HomepageState extends State<Homepage> {
                     itemCount: data.length,
                     itemBuilder: (context, index) {
                       final item = data[index];
-                      final imageUrl = item['image_url'] ?? 'https://via.placeholder.com/150';
 
                       return Container(
                         decoration: BoxDecoration(
@@ -113,12 +112,10 @@ class _HomepageState extends State<Homepage> {
                             children: [
                               Container(
                                 alignment: Alignment.center,
-                                child: Image.network(
-                                  imageUrl,
+                                child: Image.asset(
+                                  'assets/burger.jpeg',
                                   height: screenWidth * 0.32,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      Icon(Icons.broken_image),
                                 ),
                               ),
                               SizedBox(height: screenHeight * 0.01),

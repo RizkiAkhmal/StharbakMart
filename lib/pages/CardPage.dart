@@ -67,16 +67,14 @@ class _CardpageState extends State<Cardpage> {
                         final List<dynamic> data = snapshot.data!;
                         return Column(
                           children: data.map((item) {
-                             final imageUrl = item['image_url'] ??
-                            'https://via.placeholder.com/150';
                             return Padding(
                               padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
                               child: Container(
                                 width: double.infinity,
-                                height: screenHeight * 0.30,
+                                height: screenHeight * 0.20,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(screenWidth * 0.03),
+                                  borderRadius: BorderRadius.circular(screenWidth * 0.01),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey.withOpacity(0.5),
@@ -89,12 +87,10 @@ class _CardpageState extends State<Cardpage> {
                                 child: Row(
                                   children: [
                                     Padding(
-                                      padding: EdgeInsets.all(screenWidth * 0.02),
-                                      child: Image.network(
-                                        imageUrl,
-                                        errorBuilder: 
-                                        (context, error, stackTrace) =>
-                                            const Icon(Icons.broken_image),
+                                      padding: EdgeInsets.all(screenWidth * 0.10),
+                                      child: Image.asset(
+                                        'assets/burger.jpeg',
+                                        height: screenWidth * 0.20,
                                       ),
                                     ),
                                     Expanded(
